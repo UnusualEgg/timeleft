@@ -1,9 +1,11 @@
 #[cfg(not(feature = "for_web"))]
+pub use timeleft::*;
+#[cfg(not(feature = "for_web"))]
 mod timeleft {
-    use csv::Reader;
-    use libc::{alarm, pause, signal};
-    use libtimeleft::{get_time_left, set_csv, CSVTime, DrawFn, DrawType};
-    use std::env::args;
+    pub use csv::Reader;
+    pub use libc::{alarm, pause, signal};
+    pub use libtimeleft::{get_time_left, set_csv, CSVTime, DrawFn, DrawType};
+    pub use std::env::args;
 
     ///positive is up and right
     fn move_relative(x: i32, y: i32) {
@@ -99,50 +101,50 @@ mod timeleft {
     fn sig_handler(_: i32) {
         get_time_left(&(default_draw as DrawFn));
     }
-    fn main() {
-        const TIME_FN: &str = "times.csv";
-        let home = std::env::var("HOME").expect("Couldn't get $HOME var");
-        let csvpath: String = format!("{home}/{fn}",home=home,fn=TIME_FN);
-        // CSVPATH.push_str();//   "~/times.csv"
+}
+fn main() {
+    const TIME_FN: &str = "times.csv";
+    let home = std::env::var("HOME").expect("Couldn't get $HOME var");
+    let csvpath: String = format!("{home}/{fn}",home=home,fn=TIME_FN);
+    // CSVPATH.push_str();//   "~/times.csv"
 
-        let f_result = Reader::from_path(csvpath.clone());
-        let mut f;
-        match f_result {
-            Err(e) => {
-                println!("HOME FOLDER:{}", home);
-                panic!("\nPlease put times.csv in your home folder (/Users/[your username]/times.csv)\nTo get to there:\nPress ⌘+Shift+G in finder. Type ~ and press enter.\n{}",e);
-            }
-            Ok(v) => {
-                f = v;
-            }
+    let f_result = Reader::from_path(csvpath.clone());
+    let mut f;
+    match f_result {
+        Err(e) => {
+            println!("HOME FOLDER:{}", home);
+            panic!("\nPlease put times.csv in your home folder (/Users/[your username]/times.csv)\nTo get to there:\nPress ⌘+Shift+G in finder. Type ~ and press enter.\n{}",e);
         }
+        Ok(v) => {
+            f = v;
+        }
+    }
 
-        // let csvtimes_local = Vec::new();
-        //make csvtimes with all strings
-        let mut csvs = Vec::new();
-        for i in f.deserialize::<CSVTime>() {
-            csvs.push(i.unwrap().into());
-        }
-        let len = csvs.len();
-        set_csv(csvs);
-        if len == 0 {
-            panic!(
-                "{} is empty.\nexample:\n\nname,begin,end\n1st Math,12:05,13:00\n",
-                csvpath
-            );
-        }
-        let args = args();
+    // let csvtimes_local = Vec::new();
+    //make csvtimes with all strings
+    let mut csvs = Vec::new();
+    for i in f.deserialize::<CSVTime>() {
+        csvs.push(i.unwrap().into());
+    }
+    let len = csvs.len();
+    set_csv(csvs);
+    if len == 0 {
+        panic!(
+            "{} is empty.\nexample:\n\nname,begin,end\n1st Math,12:05,13:00\n",
+            csvpath
+        );
+    }
+    let args = args();
 
-        if args.count() > 1 {
-            get_time_left(&(default_draw as DrawFn));
-        } else {
-            unsafe {
-                signal(libc::SIGALRM, sig_handler as libc::sighandler_t);
-                loop {
-                    alarm(1);
-                    pause();
-                    // std::thread::sleep(std::time::Duration::from_secs(1));
-                }
+    if args.count() > 1 {
+        get_time_left(&(default_draw as DrawFn));
+    } else {
+        unsafe {
+            signal(libc::SIGALRM, sig_handler as libc::sighandler_t);
+            loop {
+                alarm(1);
+                pause();
+                // std::thread::sleep(std::time::Duration::from_secs(1));
             }
         }
     }
