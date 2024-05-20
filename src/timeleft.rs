@@ -135,16 +135,14 @@ fn main() {
         );
     }
     let args = args();
-
     if args.count() > 1 {
-        get_time_left(&(default_draw as DrawFn));
+        sig_handler(0);
     } else {
         unsafe {
             signal(libc::SIGALRM, sig_handler as libc::sighandler_t);
             loop {
                 alarm(1);
                 pause();
-                // std::thread::sleep(std::time::Duration::from_secs(1));
             }
         }
     }
