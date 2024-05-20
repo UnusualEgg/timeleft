@@ -35,7 +35,7 @@ mod timeleft {
         //restore the cursor positon to the one that was saved
         print!("\x1b8"); //8 is restore
     }
-    fn default_draw(
+    pub fn default_draw(
         draw_type: DrawType,
         redraw_all: bool,
         class: &String,
@@ -98,7 +98,7 @@ mod timeleft {
             }
         }
     }
-    fn sig_handler(_: i32) {
+    pub fn sig_handler(_: i32) {
         get_time_left(&(default_draw as DrawFn));
     }
 }
