@@ -19,6 +19,7 @@ Tells you the time left until your next class from a file(\"times.csv\") in your
 Add an arg to print just once"""
 license = "Apache-2.0"
 build='build.rs'
+repository="https://github.com/unusualegg/timeleft"
 [lib]
 name="timeleft_web"
 #path="src/web.rs"
@@ -58,9 +59,8 @@ features = [
   'UrlSearchParams',
   'Location'
 ]
-
-[dependencies.libtimeleft]
-path = "libtimeleft"
+[dependencies]
+libtimeleft={version="0.1.0",path="libtimeleft"}
 #[dependencies.chrono]
 #version = "0.4.22"
 
