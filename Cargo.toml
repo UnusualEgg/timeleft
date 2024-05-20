@@ -20,14 +20,16 @@ Add an arg to print just once"""
 license = "Apache-2.0"
 build='build.rs'
 repository="https://github.com/unusualegg/timeleft"
+[features]
+for_web=[]
 [lib]
 name="timeleft_web"
 #path="src/web.rs"
 crate-type = ["cdylib"]
 
 
-[dev-dependencies]
-wasm-bindgen-test = "0.3.34"
+#[dev-dependencies]
+#wasm-bindgen-test = "0.3.34"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
