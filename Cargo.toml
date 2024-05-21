@@ -35,7 +35,7 @@ opt-level = "s"
 wasm-bindgen = "0.2.92"
 wasm-bindgen-test = "0.3.34"
 base64 = "0.22.1"
-libtimeleft="0.1.2"
+libtimeleft="0.1.3"
 [build-dependencies]
 base64 = "0.22.1"
 [dependencies.web-sys]
