@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "timeleft"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Sky Lentz"]
 description = """
 Tells you the time left until your next class from a file(\"times.csv\") in your home folder
