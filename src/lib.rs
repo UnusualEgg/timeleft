@@ -84,6 +84,7 @@ pub fn hook_impl(info: &panic::PanicInfo) {
 #[wasm_bindgen]
 pub fn greet() {
     console_log!("Hello world");
+    println!("Hello from println");
 }
 #[wasm_bindgen]
 pub fn handler() {
@@ -104,9 +105,7 @@ where
     let val: JsValue = document.get_element_by_id(id).expect(id).into();
     val.into()
 }
-const DEFAULT_B64:&'static str=
-        "ZGF5cyxuYW1lLGJlZ2luLGVuZA0KTW9uIFR1ZSBXZWQgVGh1LCgxc3QpIEJpb2xvZ3ksNzozMCw4OjI1DQpNb24gVHVlIFdlZCBUaHUsKDJuZCkgQ2hvaXIsODozMCw5OjI1DQpNb24gVHVlIFdlZCBUaHUsKDNyZCkgSGlzdG9yeSw5OjMwLDEwOjI1DQpNb24gVHVlIFdlZCBUaHUsKDR0aCkgUHVibGljIFNwZWFraW5nLDEwOjMwLDExOjIzDQpNb24gVHVlIFdlZCBUaHUsTHVuY2gsMTE6MzAsMTI6MDANCk1vbiBUdWUgV2VkIFRodSxSVEksMTI6MDAsMTI6MjUNCk1vbiBUdWUgV2VkIFRodSwoNXRoKSBTVEFUUywxMjozMCwxMzoyNQ0KTW9uIFR1ZSBXZWQgVGh1LCg2dGgpIEVuZ2xpc2ggSUlJLDEzOjMwLDE0OjI1DQpNb24gVHVlIFdlZCBUaHUsKDd0aCkgTGVhZGVyc2hpcCwxNDozMCwxNToyNQ0KDQo="
-;
+const DEFAULT_B64: &'static [u8] = include_bytes!("../times.b64");
 
 #[wasm_bindgen]
 pub fn run() {
@@ -118,9 +117,11 @@ pub fn run() {
     let b64: &[u8] = if let Ok(s) = window.location().search() {
         params = UrlSearchParams::new_with_str(&s).unwrap();
         result = params.get("times");
-        result.get_or_insert(DEFAULT_B64.to_string()).as_bytes()
+        result
+            .get_or_insert(String::from_utf8(DEFAULT_B64.to_vec()).unwrap())
+            .as_bytes()
     } else {
-        DEFAULT_B64.as_bytes()
+        DEFAULT_B64
     };
     let d = base64::prelude::BASE64_URL_SAFE.decode(b64).unwrap();
     let mut f = ReaderBuilder::new().from_reader(d.as_slice());

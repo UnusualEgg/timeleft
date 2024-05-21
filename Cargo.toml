@@ -19,6 +19,7 @@ Tells you the time left until your next class from a file(\"times.csv\") in your
 Add an arg to print just once"""
 license = "Apache-2.0"
 repository="https://github.com/unusualegg/timeleft"
+build="build.rs"
 [lib]
 crate-type = ["cdylib","rlib"]
 
@@ -34,7 +35,9 @@ opt-level = "s"
 wasm-bindgen = "0.2.92"
 wasm-bindgen-test = "0.3.34"
 base64 = "0.22.1"
-libtimeleft={version="0.1.2",path="../libtimeleft"}
+libtimeleft="0.1.2"
+[build-dependencies]
+base64 = "0.22.1"
 [dependencies.web-sys]
 version = "0.3.4"
 features = [

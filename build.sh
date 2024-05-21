@@ -1,1 +1,6 @@
-wasm-pack build --out-dir ~/public_html/times/pkg -t web
+#!/bin/bash
+set -e
+wasm-pack build
+cd timeleft_page
+npm run build
+cd ..
