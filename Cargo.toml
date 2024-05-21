@@ -22,7 +22,7 @@ repository="https://github.com/unusualegg/timeleft"
 
 [dependencies]
 libc = "0.2.155"
-libtimeleft={version="0.1.0",path="../libtimeleft"}
+libtimeleft={version="0.1.2"}
 #[dependencies.chrono]
 #version = "0.4.22"
 
