@@ -18,15 +18,9 @@ description = """
 Tells you the time left until your next class from a file(\"times.csv\") in your home folder
 Add an arg to print just once"""
 license = "Apache-2.0"
-build='build.rs'
 repository="https://github.com/unusualegg/timeleft"
-[features]
-for_web=[]
 [lib]
-name="timeleft_web"
-#path="src/web.rs"
-crate-type = ["cdylib"]
-
+crate-type = ["cdylib","rlib"]
 
 #[dev-dependencies]
 #wasm-bindgen-test = "0.3.34"
@@ -34,20 +28,14 @@ crate-type = ["cdylib"]
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
-[[bin]]
-name="timeleft"
-path="src/timeleft.rs"
 
-[target.'cfg(target_family="wasm")'.dependencies]
+[dependencies]
 #time = { version = "0.3.34", features = ["macros", "parsing"] }
 wasm-bindgen = "0.2.92"
 wasm-bindgen-test = "0.3.34"
-# The `console_error_panic_hook` crate provides better debugging of panics by
-# logging them with `console.error`. This is great for development, but requires
-# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
-# code size when deploying.
 base64 = "0.22.1"
-[target.'cfg(target_family="wasm")'.dependencies.web-sys]
+libtimeleft={version="0.1.2",path="../libtimeleft"}
+[dependencies.web-sys]
 version = "0.3.4"
 features = [
   'Document',
@@ -61,16 +49,9 @@ features = [
   'UrlSearchParams',
   'Location'
 ]
-[dependencies]
-libtimeleft={version="0.1.0",path="libtimeleft"}
-#[dependencies.chrono]
-#version = "0.4.22"
 
 [dependencies.csv]
 version = "1.1.6"
-
-[target.'cfg(not(target_family="wasm"))'.dependencies.libc]
-version = "0.2.139"
 
 [dependencies.serde]
 version = "1.0.147"
